@@ -1,6 +1,7 @@
 site_name: GKE Networking Hands-On Lab
 site_description: Enterprise Self-Service Lab for Google Kubernetes Engine (GKE) Networking
 site_author: Platform Engineering Team
+site_url: https://amr1k.github.io/gke-fundamentals-lab/
 repo_url: https://github.com/amr1k/gke-fundamentals-lab
 repo_name: amr1k/gke-fundamentals-lab
 
