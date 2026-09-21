@@ -1,0 +1,84 @@
+# 1. Allow Essential DNS Egress for all pods in services-lab
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: services-lab
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  - Ingress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+  # Allow Cloud DNS link-local metadata queries
+  - to:
+    - ipBlock:
+        cidr: 169.254.169.254/32
+    ports:
+    - protocol: UDP
+      port: 53
+---
+# 2. Allow Ingress to web-api from Proxy-Only Subnet and Egress to DB
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-web-api-traffic
+  namespace: services-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: web-api
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow traffic from Google Cloud Envoy Proxies (Proxy Subnet 10.40.0.0/24)
+  - from:
+    - ipBlock:
+        cidr: 10.40.0.0/24
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  # Allow web-api to communicate with stateful-db on port 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app: stateful-db
+    ports:
+    - protocol: TCP
+      port: 5432
+---
+# 3. Allow Database Ingress ONLY from web-api
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-db-only-from-api
+  namespace: services-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: stateful-db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: web-api
+    ports:
+    - protocol: TCP
+      port: 5432
+

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# MkDocs
+site/
+.cache/
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local temporary files & Secrets
+tmp/
+*.key
+*.crt
+*.pem
+kubeconfig*
+.env*
+*.env
+*.tfstate*
+*credential*.json
+*service-account*.json
+*.token
+

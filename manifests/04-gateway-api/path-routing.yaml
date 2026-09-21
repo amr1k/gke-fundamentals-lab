@@ -1,0 +1,50 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: store-routes
+  namespace: store-apps
+spec:
+  parentRefs:
+  - name: internal-gateway
+    namespace: gateway-infra
+    sectionName: http
+  hostnames:
+  - "store.enterprise.internal"
+  rules:
+  # 1. URL Path Routing to Store Service with Request Header Filter
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /store
+    filters:
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        set:
+          - name: X-Corporate-Env
+            value: "production"
+    backendRefs:
+    - name: store-service
+      port: 8080
+
+  # 2. Path Routing to Billing Service
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /billing
+    backendRefs:
+    - name: billing-service
+      port: 8080
+
+  # 3. HTTP Redirect from /legacy-shop to /store
+  - matches:
+    - path:
+        type: Exact
+        value: /legacy-shop
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /store
+        statusCode: 301
+

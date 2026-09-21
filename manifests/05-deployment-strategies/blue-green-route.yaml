@@ -1,0 +1,31 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: payments-production
+  namespace: traffic-lab
+spec:
+  parentRefs:
+  - name: internal-gateway
+    namespace: gateway-infra
+    sectionName: http
+  hostnames:
+  - "production.enterprise.internal"
+  rules:
+  # Rule 1: Smoke-test routing to Green (payments-v2-svc) via pre-flight header
+  - matches:
+    - headers:
+      - name: X-Preflight-Test
+        value: "true"
+    backendRefs:
+    - name: payments-v2-svc
+      port: 8080
+
+  # Rule 2: Primary Production traffic currently routed to Blue (payments-v1-svc)
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: payments-v1-svc
+      port: 8080
+

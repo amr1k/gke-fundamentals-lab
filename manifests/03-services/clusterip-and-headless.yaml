@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: services-lab
+---
+# 1. Standard ClusterIP Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-api
+  namespace: services-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-api
+  template:
+    metadata:
+      labels:
+        app: web-api
+    spec:
+      containers:
+      - name: api
+        image: registry.k8s.io/echoserver:1.10
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-api-clusterip
+  namespace: services-lab
+spec:
+  type: ClusterIP
+  selector:
+    app: web-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+---
+# 2. Headless Service with StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-headless
+  namespace: services-lab
+spec:
+  clusterIP: None
+  selector:
+    app: stateful-db
+  ports:
+  - name: tcp-db
+    port: 5432
+    targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stateful-db
+  namespace: services-lab
+spec:
+  serviceName: database-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: stateful-db
+  template:
+    metadata:
+      labels:
+        app: stateful-db
+    spec:
+      containers:
+      - name: db
+        image: registry.k8s.io/echoserver:1.10
+        ports:
+        - containerPort: 5432
+

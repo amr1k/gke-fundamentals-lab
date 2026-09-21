@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-l4-service
+  namespace: services-lab
+  annotations:
+    # Specifies that this is an Internal TCP/UDP Load Balancer
+    cloud.google.com/load-balancer-type: "Internal"
+    # Optional: specifies a specific subnet if different from cluster subnet
+    networking.gke.io/internal-load-balancer-subnet: "gke-nodes-subnet"
+    # Optional: enables global access across all GCP regions in the VPC
+    networking.gke.io/internal-load-balancer-allow-global-access: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: web-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+

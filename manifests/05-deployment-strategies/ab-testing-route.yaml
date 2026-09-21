@@ -1,0 +1,34 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: payments-ab-route
+  namespace: traffic-lab
+spec:
+  parentRefs:
+  - name: internal-gateway
+    namespace: gateway-infra
+    sectionName: http
+  hostnames:
+  - "ab.enterprise.internal"
+  rules:
+  # Rule 1: Beta users with header 'X-Release-Track: preview' or 'tier=beta' query param
+  - matches:
+    - headers:
+      - name: X-Release-Track
+        value: preview
+    - queryParams:
+      - name: tier
+        value: beta
+    backendRefs:
+    - name: payments-v2-svc
+      port: 8080
+
+  # Rule 2: Default fallback rule for general traffic
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: payments-v1-svc
+      port: 8080
+

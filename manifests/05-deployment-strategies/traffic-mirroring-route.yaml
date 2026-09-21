@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: payments-mirror-route
+  namespace: traffic-lab
+spec:
+  parentRefs:
+  - name: internal-gateway
+    namespace: gateway-infra
+    sectionName: http
+  hostnames:
+  - "mirror.enterprise.internal"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    # Primary destination: responses returned directly to the client
+    backendRefs:
+    - name: payments-v1-svc
+      port: 8080
+    # Shadow destination: out-of-band copy of traffic sent to v2
+    filters:
+    - type: RequestMirror
+      requestMirror:
+        backendRef:
+          name: payments-v2-svc
+          port: 8080
+

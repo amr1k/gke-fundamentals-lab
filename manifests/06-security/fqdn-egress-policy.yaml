@@ -1,0 +1,18 @@
+apiVersion: networking.gke.io/v1alpha1
+kind: FQDNNetworkPolicy
+metadata:
+  name: allow-github-api-egress
+  namespace: services-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: web-api
+  egress:
+  - to:
+    - fqdns:
+      - "api.github.com"
+      - "*.github.com"
+    ports:
+    - protocol: TCP
+      port: 443
+

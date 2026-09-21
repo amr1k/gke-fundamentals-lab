@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neg-workload
+  namespace: services-lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: neg-workload
+  template:
+    metadata:
+      labels:
+        app: neg-workload
+    spec:
+      containers:
+      - name: web
+        image: registry.k8s.io/echoserver:1.10
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neg-service
+  namespace: services-lab
+  annotations:
+    # Standalone NEG annotation: GKE NEG controller generates a zonal NEG targeting Pod IPs directly
+    cloud.google.com/neg: '{"exposed_ports": {"80":{}}}'
+spec:
+  type: ClusterIP
+  selector:
+    app: neg-workload
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+

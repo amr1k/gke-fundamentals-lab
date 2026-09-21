@@ -1,0 +1,127 @@
+site_name: GKE Networking Hands-On Lab
+site_description: Enterprise Self-Service Lab for Google Kubernetes Engine (GKE) Networking
+site_author: Platform Engineering Team
+repo_url: https://github.com/amr1k/gke-fundamentals-lab
+repo_name: amr1k/gke-fundamentals-lab
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    logo: material/google-cloud
+    repo: fontawesome/brands/github
+  features:
+    # Header & Tab Navigation
+    - navigation.tabs              # Top-level navigation items rendered as tabs in the header
+    - navigation.tabs.sticky       # Pin tabs to the top on scroll
+    - navigation.indexes           # Link section titles directly to their index.md (no redundant Overview link)
+    - navigation.path              # Breadcrumb navigation path in sub-header
+    # Sidebar & Page Navigation
+    - navigation.instant           # Single-page-app speed instant navigation
+    - navigation.tracking          # Update URL hash based on scroll position
+    - navigation.sections          # Render top-level sidebar items as group sections
+    - navigation.expand            # Auto-expand active navigation tree
+    - navigation.top               # Floating back-to-top button
+    # Search & Code Experience
+    - search.suggest               # Autocomplete search suggestions
+    - search.highlight             # Highlight search query matches on page
+    - search.share                 # Shareable search URLs
+    - content.code.copy            # One-click code copy button on all snippets
+    - content.tabs.link            # Synchronize language/content tabs across documentation
+    - toc.follow                   # Automatically scroll table-of-contents with viewport
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - javascripts/variables.js
+
+extra_css:
+  - stylesheets/extra.css
+
+# Clean, balanced 5-tab header layout with breadcrumbs and direct index routing
+nav:
+  - Home: index.md
+
+  - Foundations:
+      - 1. Cluster Setup:
+          - 01-cluster-setup/index.md
+          - VPC, Subnets & Cloud NAT: 01-cluster-setup/01-vpc-and-nat.md
+          - Provisioning Private GKE: 01-cluster-setup/02-private-cluster.md
+          - Bastion & Cluster Access: 01-cluster-setup/03-access-and-bastion.md
+          - Enterprise Shared VPC: 01-cluster-setup/04-shared-vpc.md
+      - 2. Networking Fundamentals:
+          - 02-networking-fundamentals/index.md
+          - IPAM & Alias IPs: 02-networking-fundamentals/01-ipam-and-alias-ips.md
+          - Datapath v2 (eBPF / Cilium): 02-networking-fundamentals/02-datapath-v2.md
+          - Cloud DNS for GKE: 02-networking-fundamentals/03-gke-dns.md
+
+  - Services & Gateway:
+      - 3. Services & NEGs:
+          - 03-services-and-load-balancing/index.md
+          - ClusterIP & Headless: 03-services-and-load-balancing/01-clusterip-and-headless.md
+          - Internal TCP/UDP Load Balancing: 03-services-and-load-balancing/02-internal-lb.md
+          - Container-Native NEGs: 03-services-and-load-balancing/03-negs-container-native.md
+      - 4. Gateway API:
+          - 04-gateway-api/index.md
+          - Concepts & Architecture: 04-gateway-api/01-gateway-concepts.md
+          - Internal Application Gateway: 04-gateway-api/02-internal-gateway.md
+          - Routing, Rewrites & TLS: 04-gateway-api/03-routing-and-tls.md
+
+  - Deployments:
+      - 5. Deployment Strategies:
+          - 05-deployment-strategies/index.md
+          - Canary Deployments: 05-deployment-strategies/01-canary-deployments.md
+          - A/B Testing & Routing: 05-deployment-strategies/02-ab-testing.md
+          - Blue/Green Deployments: 05-deployment-strategies/03-blue-green.md
+          - Traffic Mirroring: 05-deployment-strategies/04-traffic-mirroring.md
+
+  - Security & Operations:
+      - 6. Network Security:
+          - 06-network-security/index.md
+          - Datapath v2 Network Policies: 06-network-security/01-network-policies.md
+          - FQDN Egress Policies: 06-network-security/02-fqdn-egress.md
+          - Workload Identity & Metadata: 06-network-security/03-workload-identity.md
+      - 7. Troubleshooting:
+          - 07-troubleshooting/index.md
+          - Diagnostics Guide & Runbook: 07-troubleshooting/01-diagnostics-guide.md
+      - Teardown & Cleanup: cleanup.md
