@@ -30,6 +30,13 @@ A **Headless Service** explicitly sets `spec.clusterIP: None`.
 
 ## 3. Hands-on Deployment
 
+> [!TIP]
+> Ensure you are in the root of the cloned repository (`cd gke-fundamentals-lab`) so that `manifests/` resolves properly. If you haven't cloned the repository yet, run:
+> ```bash
+> git clone https://github.com/amr1k/gke-fundamentals-lab.git
+> cd gke-fundamentals-lab
+> ```
+
 Apply the manifests located in `manifests/03-services/clusterip-and-headless.yaml`:
 
 ```bash

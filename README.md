@@ -94,6 +94,12 @@ bash scripts/02-create-cluster.sh
 
 ### Option B: Step-by-Step Hands-On Guide
 Follow the modules sequentially starting from [Module 1: Enterprise Cluster Setup](docs/01-cluster-setup/index.md).
+1. Clone the repository so manifests and configurations are ready to apply:
+   ```bash
+   git clone https://github.com/amr1k/gke-fundamentals-lab.git
+   cd gke-fundamentals-lab
+   ```
+2. Follow the modules sequentially starting from [Module 1: Enterprise Cluster Setup](docs/01-cluster-setup/index.md).
 
 ---
 

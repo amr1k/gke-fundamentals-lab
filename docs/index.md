@@ -81,6 +81,20 @@ Before starting the lab, ensure you have:
 
 ---
 
+## 📥 Clone the Lab Repository
+
+All Kubernetes YAML manifests, configurations, and helper scripts used throughout this lab are hosted in the repository. Clone the repo to your workstation (or Cloud Shell / Bastion host) and navigate into the directory so the manifests are ready to apply:
+
+```bash
+git clone https://github.com/amr1k/gke-fundamentals-lab.git
+cd gke-fundamentals-lab
+```
+
+> [!TIP]
+> Keep your terminal session inside the `gke-fundamentals-lab` directory. All subsequent `kubectl apply -f manifests/...` commands in the modules assume you are in the repository root.
+
+---
+
 ## 🚀 Lab Modules
 
 Navigate through the sections using the left sidebar or the direct links below:

@@ -23,6 +23,13 @@ Before creating network resources, calculate the required CIDR blocks:
 
 ## 2. Set Environment Variables
 
+If you have not already done so, clone the lab repository so you have access to the helper scripts and Kubernetes manifests:
+
+```bash
+git clone https://github.com/amr1k/gke-fundamentals-lab.git
+cd gke-fundamentals-lab
+```
+
 Export the parameters for your environment:
 
 ```bash

@@ -85,6 +85,7 @@ gcloud compute ssh gke-bastion \
 ---
 
 ## 3. Retrieve Cluster Credentials
+## 3. Retrieve Cluster Credentials & Prepare Manifests
 
 On your authorized machine (workstation or bastion), configure `kubectl`:
 
@@ -97,6 +98,14 @@ gcloud container clusters get-credentials ${CLUSTER_NAME} \
 Verify `kubectl` context:
 ```bash
 kubectl config current-context
+```
+
+### 3.1 Clone Repository for Kubernetes Manifests
+Ensure the lab repository is cloned on your current machine so that the Kubernetes manifest directory `manifests/` is readily available:
+
+```bash
+git clone https://github.com/amr1k/gke-fundamentals-lab.git
+cd gke-fundamentals-lab
 ```
 
 ---
